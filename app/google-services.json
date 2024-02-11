@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "243957207615",
+    "project_id": "multiaventuras-111d7",
+    "storage_bucket": "multiaventuras-111d7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:243957207615:android:30dae65528f45992b6de8a",
+        "android_client_info": {
+          "package_name": "com.example.multiaventura"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHHzJFnBOOgfWSEP96ThOmyD_rYLP9G3g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
