@@ -69,11 +69,14 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     implementation ("com.google.android.material:material:1.11.0")
 
+    //firebase
+    implementation(platform("com.google.firebase:firebase-bom:32.7.2"))
+    implementation ("com.google.firebase:firebase-auth-ktx")
+    implementation ("com.google.firebase:firebase-firestore-ktx")
+
     //navegacion
     implementation ("androidx.hilt:hilt-navigation-compose:1.1.0")
 
     //iconos
-    implementation ("androidx.compose.material:material-icons-extended:1.6.1")
+    implementation ("androidx.compose.material:material-icons-extended:1.6.1")}
 
-    //firebase
-    implementation(platform("com.google.firebase:firebase-bom:32.7.2"))}

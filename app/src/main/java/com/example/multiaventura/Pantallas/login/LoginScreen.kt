@@ -39,10 +39,14 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import com.example.multiaventura.Navegacion.MultiAventuraScreens
 import com.example.multiaventura.R
 
 @Composable
-fun LoginScreen(navController: NavController){
+fun LoginScreen(
+    navController: NavController,
+    viewModel: LoginScreenViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+    ){
     //Cuando mi variable es = true Hace el login
     //Cuando mi variable sea = false Creara un nuevo usuario
     val showLoginForm = rememberSaveable{
@@ -64,6 +68,10 @@ fun LoginScreen(navController: NavController){
                     //me muestra el mensaje por consola
                     email, password ->
                     Log.d("Login", "Me logueo con $email y $password" )
+                    //Llamo al viewModel para pasarle usuario y contraseña y si es correcto avanzo de pantalla
+                    viewModel.signInWithEmailAndPassword(email, password){
+                        navController.navigate(MultiAventuraScreens.HomeScreen.name)
+                    }
                 }
                 Spacer(modifier = Modifier.height(15.dp))
                 Row(
@@ -95,6 +103,10 @@ fun LoginScreen(navController: NavController){
                     //me muestra el mensaje por consola
                     email, password ->
                     Log.d("Create", "Creo la cuenta $email y $password" )
+                    //llamo a la función para crear usuarios si no existen
+                    viewModel.createUserWithEmailAndPass(email, password){
+                        navController.navigate(MultiAventuraScreens.HomeScreen.name)
+                    }
                 }
                 Spacer(modifier = Modifier.height(15.dp))
                 Row(
