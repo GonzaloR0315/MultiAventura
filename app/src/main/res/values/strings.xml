@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">MultiAventura</string>
+    <string name="iniciaSesion">Inicia Sesión</string>
+    <string name="crearCuenta">Crear una cuenta</string>
+    <string name="registrate">Registrate</string>
+    <string name="email">Email</string>
+    <string name="clave">Contraseña</string>
+    <string name="yaTienes">¿Ya tienes cuenta?</string>
+    <string name="noTienes">¿No tienes cuenta?</string>
+
+</resources>
