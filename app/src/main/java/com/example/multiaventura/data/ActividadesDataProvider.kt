@@ -3,7 +3,7 @@ package com.example.multiaventura.data
 import com.example.multiaventura.R
 import com.example.multiaventura.model.Actividad
 object ActividadesDataProvider {
-    val Actividad = getActividadData()[0]
+    val defaultActividad = getActividadData()[0]
 
     fun getActividadData(): List<Actividad>{
         return listOf(
@@ -27,8 +27,8 @@ object ActividadesDataProvider {
                 id = 3,
                 titleResourceId = R.string.tiroConArco,
                 playerCount = 20,
-                imageResourceId = R.drawable.tiroConArco_icon,
-                actividadImageBanner = R.drawable.tiroConArco,
+                imageResourceId = R.drawable.tiroconarco_icon,
+                actividadImageBanner = R.drawable.tiroconarco,
                 actividadDetails = R.string.tiroConArcoDetails
             ),
             Actividad(
