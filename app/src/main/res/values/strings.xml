@@ -9,6 +9,10 @@
     <string name="noTienes">¿No tienes cuenta?</string>
 
 
+    <string name="actividades">Actividades</string>
+    <string name="info_actividades">Información de la actividad</string>
+    <string name="volver">Volver</string>
+
     <!-- Actividades -->
     <string name="paintball">Paintball</string>
     <string name="tirolina">Tirolina</string>
@@ -16,6 +20,11 @@
     <string name="rafting">Rafting</string>
     <string name="karting">Karting</string>
     <string name="restarurante">Restaurante</string>
+
+    <plurals name="personas">
+        <item quantity="one">1 Persona</item>
+        <item quantity="other">%1$d Personas</item>
+    </plurals>
 
     <!-- Detalles de las actividades -->
 
