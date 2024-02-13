@@ -7,4 +7,22 @@
     <string name="clave">Contraseña</string>
     <string name="yaTienes">¿Ya tienes cuenta?</string>
     <string name="noTienes">¿No tienes cuenta?</string>
+
+
+    <!-- Actividades -->
+    <string name="paintball">Paintball</string>
+    <string name="tirolina">Tirolina</string>
+    <string name="tiroConArco">Tiro con arco</string>
+    <string name="rafting">Rafting</string>
+    <string name="karting">Karting</string>
+    <string name="restarurante">Restaurante</string>
+
+    <!-- Detalles de las actividades -->
+
+    <string name="paintballDetails">Sumérgete en una batalla simulada llena de emoción y estrategia en nuestro campo de paintball especialmente diseñado. Con escenarios temáticos que desafían tu ingenio y tu habilidad táctica, te unirás a tu equipo para esquivar disparos, crear estrategias y conquistar territorio en medio de la adrenalina y la camaradería. ¡Prepárate para una experiencia llena de acción que te dejará con recuerdos duraderos y la sensación de haber sido parte de una verdadera aventura de paintball!</string>
+    <string name="tirolinaDetails">La tirolina es una actividad de aventura que consiste en deslizarse a lo largo de un cable suspendido en el aire, asegurado con arneses y equipos de seguridad. Los participantes experimentan la emoción de volar sobre el paisaje, disfrutando de vistas panorámicas impresionantes mientras atraviesan bosques, gargantas o cañones. Es una experiencia emocionante que combina la adrenalina con la belleza natural del entorno, ofreciendo una perspectiva única y una sensación de libertad mientras se deslizan a altas velocidades.</string>
+    <string name="tiroConArcoDetails">El tiro con arco es una actividad que requiere precisión, concentración y habilidad. Los participantes utilizan arcos y flechas para disparar hacia blancos situados a diferentes distancias. Es una práctica que combina fuerza física con control mental, promoviendo la coordinación mano-ojo y la disciplina. Además de ser un deporte competitivo, el tiro con arco también puede ser una actividad relajante y meditativa, ya que los participantes se sumergen en la concentración y la técnica necesarias para mejorar su puntería.</string>
+    <string name="raftingDetails">El rafting es una actividad acuática emocionante que consiste en descender por ríos turbulentos en balsas inflables, sorteando rápidos y obstáculos naturales. Los participantes trabajan en equipo bajo la dirección de un guía experto, utilizando remos para navegar por el agua y superar los desafíos del río. Es una experiencia llena de adrenalina que combina la emoción de la aventura con la belleza escénica de los entornos fluviales. Además de la emoción del descenso, el rafting también fomenta el trabajo en equipo, la comunicación y la confianza entre los participantes.</string>
+    <string name="kartingDetails">El karting es una actividad de velocidad y destreza que consiste en conducir pequeños vehículos de motor en pistas especialmente diseñadas. Los participantes experimentan la emoción de la competición mientras manejan los karts al límite de sus capacidades, buscando la mejor línea de carrera y superando a sus oponentes. Es una actividad que requiere habilidad y concentración, ofreciendo una experiencia de conducción emocionante y accesible para personas de todas las edades. Ya sea compitiendo en carreras cronometradas o simplemente disfrutando de vueltas rápidas, el karting es una forma divertida de experimentar la velocidad y la adrenalina.</string>
+    <string name="restaruranteDetails">El restaurante es el lugar donde los participantes pueden relajarse y recargar energías después de una jornada llena de actividades de aventura. Ofreciendo una variedad de opciones gastronómicas para satisfacer todos los gustos y necesidades dietéticas, el restaurante proporciona un ambiente acogedor y cómodo donde los participantes pueden disfrutar de una deliciosa comida y compartir experiencias con amigos y compañeros de aventura. Ya sea disfrutando de platos locales tradicionales o explorando sabores internacionales, el restaurante es un espacio para socializar, relajarse y disfrutar de la buena comida después de una jornada de acción y emoción.</string>
 </resources>
