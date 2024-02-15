@@ -70,6 +70,10 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     implementation ("com.google.android.material:material:1.11.0")
 
+    //maps
+    implementation ("com.google.maps.android:maps-compose:1.1.0")
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
+
     //firebase
     implementation(platform("com.google.firebase:firebase-bom:32.7.2"))
     implementation ("com.google.firebase:firebase-auth-ktx")

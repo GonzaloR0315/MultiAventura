@@ -10,5 +10,7 @@ data class Actividad(
     val playerCount: Int,
     @DrawableRes val imageResourceId: Int,
     @DrawableRes val actividadImageBanner: Int,
-    @StringRes val actividadDetails: Int
+    @StringRes val actividadDetails: Int,
+    val lat: Double,
+    val lng: Double
 )
