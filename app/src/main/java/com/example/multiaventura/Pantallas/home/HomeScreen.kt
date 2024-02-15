@@ -253,6 +253,7 @@ private fun ActividadDetail(
                         contentDescription = null,
                         alignment = Alignment.TopCenter,
                         contentScale = ContentScale.FillWidth,
+                        modifier = Modifier.fillMaxWidth()
                     )
                 }
                 Column(
