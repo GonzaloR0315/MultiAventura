@@ -22,6 +22,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -35,6 +37,9 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -57,6 +62,8 @@ import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapType
 import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.Marker
+import java.text.SimpleDateFormat
+import java.util.Date
 
 
 @Composable
@@ -234,6 +241,7 @@ private fun ActividadDetail(
     }
     val scrollState = rememberScrollState()
     val layoutDirection = LocalLayoutDirection.current
+
     Box(
         modifier = modifier
             .verticalScroll(state = scrollState)
@@ -298,6 +306,7 @@ private fun ActividadDetail(
                     horizontal = dimensionResource(R.dimen.padding_detail_content_horizontal)
                 )
             )
+            ReservaButton(selectedActividad, viewModel())
             Box(modifier = Modifier.height(600.dp)){
                 val marker = LatLng(selectedActividad.lat, selectedActividad.lng)
                 GoogleMap(
@@ -312,6 +321,68 @@ private fun ActividadDetail(
         }
     }
 }
+@Composable
+fun ReservaButton(
+    selectedActividad: Actividad,
+    viewModel: HomeViewModel,
+) {
+    var nomActividad = ""
+    nomActividad = stringResource(selectedActividad.titleResourceId)
+
+    // Variable para controlar la visibilidad del AlertDialog de confirmación
+    var mostrarConfirmacion by remember { mutableStateOf(false) }
+
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Button(
+            onClick = {
+                // Mostrar el AlertDialog de confirmación
+                mostrarConfirmacion = true
+            },
+            content = { Text(stringResource(R.string.confirmarRes)) }
+        )
+    }
+
+    // Mostrar el AlertDialog de confirmación si la variable mostrarConfirmacion es true
+    if (mostrarConfirmacion) {
+        AlertDialog(
+            onDismissRequest = {
+                // Ocultar el AlertDialog si se presiona fuera de él
+                mostrarConfirmacion = false
+            },
+            title = { Text(stringResource(R.string.confirmarRes)) },
+            text = { Text(stringResource(R.string.preguntaConfirmarRes)) },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        // Realizar la reserva si se confirma
+                        viewModel.crearReservaFirestore(
+                            nomActividad,
+                            SimpleDateFormat("yyyy-MM-dd").format(Date())
+                        )
+                        mostrarConfirmacion = false // Ocultar el AlertDialog
+                    }
+                ) {
+                    Text(stringResource(R.string.si))
+                }
+            },
+            dismissButton = {
+                Button(
+                    onClick = {
+                        // Cancelar la reserva si se cancela la confirmación
+                        mostrarConfirmacion = false // Ocultar el AlertDialog
+                    }
+                ) {
+                    Text(stringResource(R.string.cancelar))
+                }
+            }
+        )
+    }
+}
+
 
 @Composable
 fun MyGoogleMaps() {
