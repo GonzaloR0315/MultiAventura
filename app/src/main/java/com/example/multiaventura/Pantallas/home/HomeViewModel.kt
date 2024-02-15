@@ -4,11 +4,11 @@ package com.example.multiaventura.Pantallas.home
 import androidx.lifecycle.ViewModel
 import com.example.multiaventura.data.ActividadesDataProvider
 import com.example.multiaventura.model.Actividad
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
-import java.util.Date
 
 
 class HomeViewModel : ViewModel() {
@@ -46,7 +46,7 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    fun crearReservaFirestore(nomActividad: String, fecha: String) {
+    fun crearReservaFirestore(nomActividad: String, fecha: String, numPersonas: Int, telefono: String) {
         // Acceder a la colección "reservas"
         val reservasRef = db.collection("reservas")
 
@@ -54,7 +54,9 @@ class HomeViewModel : ViewModel() {
         val reserva = hashMapOf(
             "actividad" to nomActividad,
             "fecha" to fecha,
-            "timestamp" to Date() // Timestamp opcional para registrar el momento exacto de la reserva
+            "numPersonas" to numPersonas,
+            "telefono" to telefono,
+            "timestamp" to FieldValue.serverTimestamp() // Usamos FieldValue.serverTimestamp() para registrar el momento exacto de la reserva
         )
 
         // Agregar el documento a la colección "reservas"
@@ -68,6 +70,7 @@ class HomeViewModel : ViewModel() {
                 println("Error al agregar el documento: $e")
             }
     }
+
 
 }
 

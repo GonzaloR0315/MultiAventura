@@ -19,6 +19,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -30,6 +31,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -51,6 +53,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -62,8 +65,6 @@ import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapType
 import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.Marker
-import java.text.SimpleDateFormat
-import java.util.Date
 
 
 @Composable
@@ -326,23 +327,66 @@ fun ReservaButton(
     selectedActividad: Actividad,
     viewModel: HomeViewModel,
 ) {
+    // Variables para los datos de reserva
     var nomActividad = ""
     nomActividad = stringResource(selectedActividad.titleResourceId)
+    var numPersonas by remember { mutableStateOf(1) }
+    var telefono by remember { mutableStateOf("") }
+    var fechaSeleccionada by remember { mutableStateOf<String?>(null) }
 
     // Variable para controlar la visibilidad del AlertDialog de confirmación
     var mostrarConfirmacion by remember { mutableStateOf(false) }
+
+    // Variable para el número máximo de personas permitido
+    val maxPersonas = selectedActividad.playerCount
 
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        // Campo de entrada para el número de personas
+        OutlinedTextField(
+            value = numPersonas.toString(),
+            onValueChange = { newValue ->
+                val newNum = newValue.toIntOrNull() ?: 0
+                numPersonas = when {
+                    newNum < 1 -> 1
+                    newNum > maxPersonas -> maxPersonas
+                    else -> newNum
+                }
+            },
+            label = { Text("Número de personas (máximo: $maxPersonas)") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            modifier = Modifier.padding(8.dp)
+        )
+
+        // Campo de entrada para el teléfono
+        OutlinedTextField(
+            value = telefono,
+            onValueChange = { telefono = it },
+            label = { Text("Teléfono") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+            modifier = Modifier.padding(8.dp)
+        )
+
+        // Campo de entrada para seleccionar la fecha
+        OutlinedTextField(
+            value = fechaSeleccionada ?: "",
+            onValueChange = { fechaSeleccionada = it },
+            label = { Text("Fecha (dd-MM-yyyy)") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            modifier = Modifier.padding(8.dp)
+        )
+
+        // Botón para confirmar la reserva
         Button(
             onClick = {
                 // Mostrar el AlertDialog de confirmación
                 mostrarConfirmacion = true
             },
-            content = { Text(stringResource(R.string.confirmarRes)) }
+            content = { Text(stringResource(R.string.confirmarRes)) },
+            modifier = Modifier.padding(8.dp)
         )
     }
 
@@ -359,10 +403,14 @@ fun ReservaButton(
                 Button(
                     onClick = {
                         // Realizar la reserva si se confirma
-                        viewModel.crearReservaFirestore(
-                            nomActividad,
-                            SimpleDateFormat("yyyy-MM-dd").format(Date())
-                        )
+                        if (fechaSeleccionada != null) {
+                            viewModel.crearReservaFirestore(
+                                nomActividad,
+                                fechaSeleccionada!!,
+                                numPersonas,
+                                telefono
+                            )
+                        }
                         mostrarConfirmacion = false // Ocultar el AlertDialog
                     }
                 ) {
@@ -382,6 +430,8 @@ fun ReservaButton(
         )
     }
 }
+
+
 
 
 @Composable
