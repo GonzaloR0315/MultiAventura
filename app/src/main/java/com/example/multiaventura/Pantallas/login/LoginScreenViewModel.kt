@@ -1,8 +1,6 @@
 package com.example.multiaventura.Pantallas.login
 
-import android.R
 import android.util.Log
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -37,22 +35,21 @@ class LoginScreenViewModel: ViewModel() {
         email: String,
         password: String,
         home: () -> Unit
-    ){
-        if (_loading.value == false){
+    ) {
+        if (_loading.value == false) {
             _loading.value = true
             auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        //si crea bien el usuario lo registro, le mando a home y me guardo su nombre de usuario
+                        // si crea bien el usuario lo registro, le mando a home y me guardo su nombre de usuario
                         val displayName =
                             task.result.user?.email?.split("@")?.get(0)
                         createUser(displayName)
                         home()
                     } else {
-                        Log.d("Login", "CreateUserEmailPass: ${task.result.toString()}")
+                        Log.e("Login", "Failed to create user", task.exception)
                     }
-                    _loading.value = false
-                }
+                    _loading.value = false                }
         }
     }
 //Función para crear usuarios en firebase y guardar mas campos que usuario y contraseña

@@ -57,6 +57,7 @@ class HomeViewModel : ViewModel() {
             "numPersonas" to numPersonas,
             "telefono" to telefono,
             "timestamp" to FieldValue.serverTimestamp() // Usamos FieldValue.serverTimestamp() para registrar el momento exacto de la reserva
+
         )
 
         // Agregar el documento a la colección "reservas"

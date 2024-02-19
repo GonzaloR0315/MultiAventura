@@ -59,12 +59,14 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.multiaventura.R
 import com.example.multiaventura.model.Actividad
+import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapType
 import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.rememberCameraPositionState
 
 
 @Composable
@@ -310,9 +312,11 @@ private fun ActividadDetail(
             ReservaButton(selectedActividad, viewModel())
             Box(modifier = Modifier.height(600.dp)){
                 val marker = LatLng(selectedActividad.lat, selectedActividad.lng)
+                val cameraPosition = rememberCameraPositionState{ position = CameraPosition.fromLatLngZoom(marker, 15f)}
                 GoogleMap(
                     modifier = Modifier.fillMaxSize(),
                     properties = MapProperties(mapType = MapType.HYBRID),
+                    cameraPositionState = cameraPosition,
                     uiSettings = MapUiSettings(zoomControlsEnabled = false)
                     ){
                     Marker(position = marker, title = stringResource(selectedActividad.titleResourceId))
@@ -351,7 +355,7 @@ fun ReservaButton(
             onValueChange = { newValue ->
                 val newNum = newValue.toIntOrNull() ?: 0
                 numPersonas = when {
-                    newNum < 1 -> 1
+                    newNum < 0 -> 1
                     newNum > maxPersonas -> maxPersonas
                     else -> newNum
                 }
@@ -430,15 +434,6 @@ fun ReservaButton(
         )
     }
 }
-
-
-
-
-@Composable
-fun MyGoogleMaps() {
-
-}
-
 
 
 
