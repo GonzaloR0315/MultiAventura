@@ -1,20 +1,11 @@
+// Definición del paquete donde se encuentra la pantalla de inicio de la aplicación
 package com.example.multiaventura.Pantallas.home
 
+// Importaciones necesarias
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.calculateEndPadding
-import androidx.compose.foundation.layout.calculateStartPadding
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -23,25 +14,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -68,15 +42,20 @@ import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
 
-
+// Composable para la pantalla de inicio
 @Composable
 fun Home(
     navController: NavController
 ){
+    // ViewModel para la pantalla de inicio
     val viewModel: HomeViewModel = viewModel()
+
+    // Recolectar el estado de la interfaz de usuario desde el ViewModel
     val uiState by viewModel.uiState.collectAsState()
 
+    // Scaffold para la pantalla
     Scaffold (
+        // Barra superior de la pantalla
         topBar = {
             ActividadesAppBar(
                 isShowingListPage = uiState.isShowingListPage,
@@ -84,7 +63,9 @@ fun Home(
             )
         }
     ){innerPadding ->
+        // Contenido principal de la pantalla
         if (uiState.isShowingListPage){
+            // Mostrar la lista de actividades si la página de lista está activa
             ActividadesList(
                 actividades = uiState.actividadesList,
                 onClick = {
@@ -95,6 +76,7 @@ fun Home(
                 contentPadding = innerPadding,
             )
         }else{
+            // Mostrar los detalles de la actividad seleccionada si la página de detalle está activa
             ActividadDetail(
                 selectedActividad = uiState.currentActividad,
                 contentPadding = innerPadding,
@@ -107,6 +89,7 @@ fun Home(
     }
 }
 
+// Composable para la barra de la aplicación
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ActividadesAppBar(
@@ -115,16 +98,18 @@ fun ActividadesAppBar(
     modifier: Modifier = Modifier
 ){
     val isShowingDetailPage =  !isShowingListPage
+
+    // Barra superior con título dinámico y botón de navegación de retroceso
     TopAppBar(
         title = {
             Text(
                 text =
-                    if (isShowingDetailPage){
-                        stringResource(R.string.info_actividades)
-                    }else{
-                        stringResource(R.string.actividades)
-                    },
-                    fontWeight = FontWeight.Bold
+                if (isShowingDetailPage){
+                    stringResource(R.string.info_actividades)
+                }else{
+                    stringResource(R.string.actividades)
+                },
+                fontWeight = FontWeight.Bold
             )
         },
         navigationIcon = if (isShowingDetailPage){
@@ -147,6 +132,7 @@ fun ActividadesAppBar(
 }
 
 
+// Composable para un elemento de la lista de actividades
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ActividadesListItem(
@@ -154,6 +140,7 @@ private fun ActividadesListItem(
     onItemClick: (Actividad) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    // Tarjeta que muestra la actividad
     Card(
         elevation = CardDefaults.cardElevation(),
         modifier = modifier,
@@ -165,10 +152,12 @@ private fun ActividadesListItem(
                 .fillMaxWidth()
                 .size(dimensionResource(R.dimen.card_image_height))
         ) {
+            // Imagen de la actividad
             ActividadesListImageItem(
                 actividad = actividad,
                 modifier = Modifier.size(dimensionResource(R.dimen.card_image_height))
             )
+            // Detalles de la actividad
             Column(
                 modifier = Modifier
                     .padding(
@@ -177,17 +166,19 @@ private fun ActividadesListItem(
                     )
                     .weight(1f)
             ) {
+                // Título de la actividad
                 Text(
                     text = stringResource(actividad.titleResourceId),
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.padding(bottom = dimensionResource(R.dimen.card_text_vertical_space))
                 )
+                // Número de personas
                 Row {
-                      Text(
-                                text = pluralStringResource(
-                                    R.plurals.personas,
-                                    actividad.playerCount,
-                                    actividad.playerCount
+                    Text(
+                        text = pluralStringResource(
+                            R.plurals.personas,
+                            actividad.playerCount,
+                            actividad.playerCount
                         ),
                         style = MaterialTheme.typography.bodySmall
                     )
@@ -197,11 +188,13 @@ private fun ActividadesListItem(
     }
 }
 
+// Composable para mostrar la imagen de una actividad en la lista
 @Composable
 private fun ActividadesListImageItem(actividad: Actividad, modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
     ) {
+        // Imagen de la actividad
         Image(
             painter = painterResource(actividad.imageResourceId),
             contentDescription = null,
@@ -210,6 +203,8 @@ private fun ActividadesListImageItem(actividad: Actividad, modifier: Modifier = 
         )
     }
 }
+
+// Composable para la lista de actividades
 @Composable
 private fun ActividadesList(
     actividades: List<Actividad>,
@@ -217,12 +212,14 @@ private fun ActividadesList(
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
+    // Lista de actividades
     LazyColumn(
         contentPadding = contentPadding,
         verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium)),
         modifier = modifier.padding(top = dimensionResource(R.dimen.padding_medium)),
     ) {
         items(actividades, key = { it.id }) { actividad ->
+            // Elemento de la lista que muestra una actividad
             ActividadesListItem(
                 actividad = actividad,
                 onItemClick = onClick
@@ -231,7 +228,7 @@ private fun ActividadesList(
     }
 }
 
-
+// Composable para mostrar los detalles de una actividad
 @Composable
 private fun ActividadDetail(
     selectedActividad: Actividad,
@@ -239,6 +236,7 @@ private fun ActividadDetail(
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier
 ) {
+    // Manejar el evento de retroceso para volver a la lista de actividades
     BackHandler {
         onBackPressed()
     }
@@ -258,6 +256,7 @@ private fun ActividadDetail(
                     end = contentPadding.calculateEndPadding(layoutDirection)
                 )
         ) {
+            // Imagen de la actividad
             Box {
                 Box {
                     Image(
@@ -268,6 +267,7 @@ private fun ActividadDetail(
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
+                // Texto sobre la imagen
                 Column(
                     Modifier
                         .align(Alignment.BottomStart)
@@ -287,20 +287,22 @@ private fun ActividadDetail(
                         modifier = Modifier
                             .padding(horizontal = dimensionResource(R.dimen.padding_small))
                     )
+                    // Número de personas
                     Row(
                         modifier = Modifier.padding(dimensionResource(R.dimen.padding_small))
                     ) {
                         Text(
                             text = pluralStringResource(
                                 R.plurals.personas,
-                                    selectedActividad.playerCount,
-                                    selectedActividad.playerCount),
+                                selectedActividad.playerCount,
+                                selectedActividad.playerCount),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.inverseOnSurface,
                         )
                     }
                 }
             }
+            // Detalles de la actividad
             Text(
                 text = stringResource(selectedActividad.actividadDetails),
                 style = MaterialTheme.typography.bodyMedium,
@@ -309,7 +311,9 @@ private fun ActividadDetail(
                     horizontal = dimensionResource(R.dimen.padding_detail_content_horizontal)
                 )
             )
+            // Botón para reservar la actividad
             ReservaButton(selectedActividad, viewModel())
+            // Mapa que muestra la ubicación de la actividad
             Box(modifier = Modifier.height(600.dp)){
                 val marker = LatLng(selectedActividad.lat, selectedActividad.lng)
                 val cameraPosition = rememberCameraPositionState{ position = CameraPosition.fromLatLngZoom(marker, 15f)}
@@ -318,14 +322,15 @@ private fun ActividadDetail(
                     properties = MapProperties(mapType = MapType.HYBRID),
                     cameraPositionState = cameraPosition,
                     uiSettings = MapUiSettings(zoomControlsEnabled = false)
-                    ){
+                ){
                     Marker(position = marker, title = stringResource(selectedActividad.titleResourceId))
-
                 }
             }
         }
     }
 }
+
+// Composable para el botón de reserva de la actividad
 @Composable
 fun ReservaButton(
     selectedActividad: Actividad,
@@ -434,9 +439,3 @@ fun ReservaButton(
         )
     }
 }
-
-
-
-
-
-

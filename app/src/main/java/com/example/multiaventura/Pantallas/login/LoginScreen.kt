@@ -1,29 +1,16 @@
+// Definición del paquete donde se encuentra la pantalla de inicio de sesión
 package com.example.multiaventura.Pantallas.login
 
-import android.text.method.SingleLineTransformationMethod
+// Importaciones necesarias para la pantalla de inicio de sesión
 import android.util.Log
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.navigation.NavController
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -42,13 +29,13 @@ import androidx.compose.ui.unit.dp
 import com.example.multiaventura.Navegacion.MultiAventuraScreens
 import com.example.multiaventura.R
 
+// Pantalla de inicio de sesión
 @Composable
 fun LoginScreen(
     navController: NavController,
     viewModel: LoginScreenViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
-    ){
-    //Cuando mi variable es = true Hace el login
-    //Cuando mi variable sea = false Creara un nuevo usuario
+){
+    // Variable para alternar entre el formulario de inicio de sesión y el de registro
     val showLoginForm = rememberSaveable{
         mutableStateOf(true)
     }
@@ -60,20 +47,21 @@ fun LoginScreen(
             verticalArrangement = Arrangement.Center
         ){
             if(showLoginForm.value){
-
+                // Formulario de inicio de sesión
                 Text(stringResource(R.string.iniciaSesion))
                 UserForm(
                     isCreateAccount = false
                 ){
-                    //me muestra el mensaje por consola
-                    email, password ->
+                    // Callback para iniciar sesión
+                        email, password ->
                     Log.d("Login", "Me logueo con $email y $password" )
-                    //Llamo al viewModel para pasarle usuario y contraseña y si es correcto avanzo de pantalla
+                    // Llamar al ViewModel para iniciar sesión
                     viewModel.signInWithEmailAndPassword(email, password){
                         navController.navigate(MultiAventuraScreens.HomeScreen.name)
                     }
                 }
                 Spacer(modifier = Modifier.height(15.dp))
+                // Alternar entre el formulario de inicio de sesión y el de registro
                 Row(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
@@ -85,7 +73,7 @@ fun LoginScreen(
                         if (showLoginForm.value) stringResource(R.string.registrate)
                         else stringResource(R.string.iniciaSesion)
                     Text(text = pregunta)
-                    //Hago que este segundo texto se pueda clickar para cambiar de pantalla y de textos
+                    // Cambiar entre el formulario de inicio de sesión y el de registro
                     Text(
                         text = accion,
                         modifier = Modifier
@@ -96,19 +84,21 @@ fun LoginScreen(
                 }
             }
             else{
+                // Formulario de registro
                 Text(stringResource(R.string.crearCuenta))
                 UserForm(
                     isCreateAccount = true
                 ){
-                    //me muestra el mensaje por consola
-                    email, password ->
+                    // Callback para crear cuenta
+                        email, password ->
                     Log.d("Create", "Creo la cuenta $email y $password" )
-                    //llamo a la función para crear usuarios si no existen
+                    // Llamar al ViewModel para crear usuario
                     viewModel.createUserWithEmailAndPass(email, password){
                         navController.navigate(MultiAventuraScreens.HomeScreen.name)
                     }
                 }
                 Spacer(modifier = Modifier.height(15.dp))
+                // Alternar entre el formulario de inicio de sesión y el de registro
                 Row(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
@@ -120,7 +110,7 @@ fun LoginScreen(
                         if (showLoginForm.value) stringResource(R.string.registrate)
                         else stringResource(R.string.iniciaSesion)
                     Text(text = pregunta)
-                    //Hago que este segundo texto se pueda clickar para cambiar de pantalla y de textos
+                    // Cambiar entre el formulario de inicio de sesión y el de registro
                     Text(
                         text = accion,
                         modifier = Modifier
@@ -134,11 +124,13 @@ fun LoginScreen(
     }
 }
 
+// Componente del formulario de usuario
 @Composable
 fun UserForm(
     isCreateAccount: Boolean = false,
     onDone: (String, String) -> Unit = {email, pwd ->}
-    ) {
+) {
+    // Estado para el email y la contraseña
     val email = rememberSaveable {
         mutableStateOf("")
     }
@@ -149,29 +141,31 @@ fun UserForm(
         mutableStateOf(false)
 
     }
-    //funcion que hace que si los valores de usuario o contraseña estan vacios
-    //desactiva el boton para poder logarse o crear usuarios
+    // Validar si el email y la contraseña no están vacíos
     val valido = remember(email.value, password.value){
         email.value.trim().isNotEmpty() &&
-        password.value.trim().isNotEmpty()
+                password.value.trim().isNotEmpty()
     }
-    // Al dar click en el boton de logarse o crear el teclado se oculta
+    // Ocultar el teclado al hacer clic en el botón de iniciar sesión o registrar
     val keyboardController = LocalSoftwareKeyboardController.current
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
     ){
+        // Entrada de email
         EmailInput(
             emailState = email
         )
+        // Entrada de contraseña
         PasswordInput(
             passwordState = password,
             labelId = stringResource(R.string.clave),
             passwordVisible = passwordVisible
         )
+        // Botón de enviar formulario
         SubmintButton(
             textId =
-                if (isCreateAccount) stringResource(R.string.crearCuenta)
-                else stringResource(R.string.iniciaSesion),
+            if (isCreateAccount) stringResource(R.string.crearCuenta)
+            else stringResource(R.string.iniciaSesion),
             inputValido = valido
         ){
             onDone(email.value.trim(), password.value.trim())
@@ -180,34 +174,35 @@ fun UserForm(
     }
 }
 
+// Botón de enviar formulario
 @Composable
 fun SubmintButton(
     textId: String,
     inputValido: Boolean,
     onClick: () ->Unit
-    ) {
+) {
     Button(
-        //Este onclick no lleva llaves porque es una función declarada arriba
         onClick = onClick,
         modifier = Modifier
             .padding(3.dp)
             .fillMaxWidth(),
         shape = CircleShape,
         enabled = inputValido
-        ){
+    ){
         Text(
             text = textId,
             modifier = Modifier
                 .padding(5.dp)
-            )
+        )
     }
 }
 
+// Entrada de email
 @Composable
 fun EmailInput(
     emailState: MutableState<String>,
     labelId : String = stringResource(R.string.email)
-    ) {
+) {
     InputField(
         valueState = emailState,
         labelId = labelId,
@@ -215,21 +210,20 @@ fun EmailInput(
     )
 }
 
+// Entrada de contraseña
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PasswordInput(
     passwordState: MutableState<String>,
     labelId: String,
     passwordVisible: MutableState<Boolean>
-    ) {
-    //Si no queremos ver la contraseña el valor se mantiene en false y no la muestra
-    //Si queremos ver la contraseña el valor cambia y se muestra
-    //Si la queremos ocultar despues de verla se vuelve a ocultar
+) {
+    // Mostrar o ocultar la contraseña
     val visualTransformation =
-    if (passwordVisible.value)
-        VisualTransformation.None
-    else
-        PasswordVisualTransformation()
+        if (passwordVisible.value)
+            VisualTransformation.None
+        else
+            PasswordVisualTransformation()
 
     OutlinedTextField(
         value = passwordState.value,
@@ -252,6 +246,7 @@ fun PasswordInput(
     )
 }
 
+// Entrada de texto genérica
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InputField(
@@ -259,7 +254,7 @@ fun InputField(
     labelId: String,
     keyboardType: KeyboardType,
     isSingleLine: Boolean = true
-    ) {
+) {
     OutlinedTextField(
         value = valueState.value,
         onValueChange = {valueState.value = it},
@@ -274,10 +269,11 @@ fun InputField(
     )
 }
 
+// Icono para mostrar u ocultar la contraseña
 @Composable
 fun PasswordVisibleIcon(
     passwordVisible: MutableState<Boolean>
-    ) {
+) {
     val image =
         if(passwordVisible.value)
             Icons.Default.VisibilityOff
